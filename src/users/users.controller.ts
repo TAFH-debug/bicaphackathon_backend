@@ -1,4 +1,13 @@
-import { Controller, Get, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+  Post,
+  Body,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtGuard } from 'src/auth/auth.guard';
 
@@ -9,6 +18,18 @@ export class UsersController {
   @Get()
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @UseGuards(JwtGuard)
+  @Post()
+  doneTest(@Req() req, @Body() body) {
+    return this.usersService.doneTest(req.user.id, body.testID);
+  }
+
+  @UseGuards(JwtGuard)
+  @Post()
+  doneExercise(@Req() req, @Body() body) {
+    return this.usersService.doneTest(req.user.id, body.exerciseID);
   }
 
   @UseGuards(JwtGuard)

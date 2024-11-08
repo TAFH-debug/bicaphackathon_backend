@@ -6,6 +6,34 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class UsersService {
   constructor(private prismaService: PrismaService) {}
 
+  doneExercise(userId: string, exerciseId: string) {
+    return this.prismaService.user.update({
+      where: { id: userId },
+      data: {
+        score: {
+          increment: 30,
+        },
+        tests: {
+          connect: { id: exerciseId },
+        },
+      },
+    });
+  }
+
+  doneTest(userId: string, testId: string) {
+    return this.prismaService.user.update({
+      where: { id: userId },
+      data: {
+        score: {
+          increment: 20,
+        },
+        tests: {
+          connect: { id: testId },
+        },
+      },
+    });
+  }
+
   create(data: CreateUserDto) {
     return this.prismaService.user.create({
       data,
@@ -26,10 +54,8 @@ export class UsersService {
     return this.prismaService.user.findUnique({
       where: { id },
       include: {
-        books: true,
-        bookshelfs: true,
-        favorites: true,
-        clubPosts: true,
+        completedExercises: true,
+        tests: true,
       },
     });
   }

@@ -6,3 +6,147 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+model HistoryExercise {
+  id  String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  Exercise Exercise[]
+}
+
+model MathExercise {
+  id  String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  Exercise Exercise[]
+}
+
+model KazakhExercise {
+  id  String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  Exercise Exercise[]
+}
+
+model Exercise {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  subject      String
+  history      HistoryExercise? @relation(fields: [historyId], references: [id])
+  math         MathExercise?    @relation(fields: [mathId], references: [id])
+  kazakh       KazakhExercise?  @relation(fields: [kazakhId], references: [id])
+  historyId    String?  @db.ObjectId
+  mathId       String?  @db.ObjectId
+  kazakhId     String?  @db.ObjectId
+
+  userIDs      String[] @db.ObjectId @default([])
+  users        User[]   @relation(fields: [userIDs], references: [id])
+}
+
+model Question {
+  id  String   @id @default(auto()) @map("_id") @db.ObjectId
+  text  String
+  options String[]
+  right   Int
+  testID      String? @db.ObjectId
+  test        Test? @relation(fields: [testID], references: [id])
+}
+
+model User {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  email           String   @unique
+  hashed_password String
+  name            String
+  surname         String
+  about           String   @default("No description")
+  score           Int      @default(0)
+
+  testIDs String[] @db.ObjectId @default([])
+  tests   Test[]   @relation(fields: [testIDs], references: [id])
+  
+  completedExerciseIDs String[] @db.ObjectId @default([])
+  completedExercises Exercise[] @relation(fields: [completedExerciseIDs], references: [id])
+}
+
+model Test {
+  id  String   @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  category String
+  difficulty Int
+  questionIDs String[] @db.ObjectId @default([])
+  questions Question[]
+
+  userIDs      String[] @db.ObjectId @default([])
+  users User[]   @relation(fields: [userIDs], references: [id])
+}
+
+model Article {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  text        String
+}
+
+// model Bookshelf {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   name String
+//   userID String? @db.ObjectId
+//   user User? @relation(fields: [userID], references: [id])
+
+//   bookIDs String[] @db.ObjectId @default([])
+//   books Book[]   bookshelfIDs  String[] @db.ObjectId @default([])
+//   bookshelfs    Bookshelf[] @relation(fields: [bookshelfIDs], references: [id])
+// }
+
+// model Book {
+//   id            String   @id @default(auto()) @map("_id") @db.ObjectId
+//   title         String
+//   author        String
+//   description   String
+//   preview_url   String
+//   archive_url   String
+//   userID        String? @db.ObjectId
+//   user          User? @relation("Books", fields: [userID], references: [id])
+
+//   likedUsersIDs      String[] @db.ObjectId
+//   likedUsers         User[] @relation("Favorites", fields: [likedUsersIDs], references: [id])
+
+//   bookshelfIDs  String[] @db.ObjectId @default([])
+//   bookshelfs    Bookshelf[] @relation(fields: [bookshelfIDs], references: [id])
+//   comments      Comment[] @relation()
+// }
+
+// model Comment {
+//   id          String @id @default(auto()) @map("_id") @db.ObjectId
+//   text        String
+//   userID      String? @db.ObjectId
+//   user        User? @relation(fields: [userID], references: [id])
+  
+//   bookID      String? @db.ObjectId
+//   book        Book? @relation(fields: [bookID], references: [id])
+
+//   clubPostID  String? @db.ObjectId
+//   clubPost    ClubPost? @relation(fields: [clubPostID], references: [id])
+// }
+
+// model Club {
+//   id          String @id @default(auto()) @map("_id") @db.ObjectId
+//   name        String
+//   description String
+//   presidentID String? @db.ObjectId
+//   president   User? @relation(fields: [presidentID], references: [id])
+  
+//   clubPosts   ClubPost[] @relation()
+// }
+
+// model ClubPost {
+//   id          String @id @default(auto()) @map("_id") @db.ObjectId
+//   text        String
+//   title       String
+  
+//   clubID      String? @db.ObjectId
+//   club        Club? @relation(fields: [clubID], references: [id])
+
+//   userID      String? @db.ObjectId
+//   user        User? @relation("Author", fields: [userID], references: [id])
+
+//   likedIDs    String[] @db.ObjectId @default([])
+//   likedUsers  User[] @relation("Liked", fields: [likedIDs], references: [id])
+
+//   comments    Comment[] @relation()
+// }
