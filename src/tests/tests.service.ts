@@ -33,4 +33,28 @@ export class TestsService {
       },
     });
   }
+
+  kazakh() {
+    return this.prisma.test.findMany({
+      where: {
+        category: 'kazakh',
+      },
+    });
+  }
+
+  history() {
+    return this.prisma.test.findMany({
+      where: {
+        category: 'history',
+      },
+    });
+  }
+
+  math() {
+    return this.prisma.test.findMany({
+      where: {
+        category: 'math',
+      },
+    });
+  }
 }

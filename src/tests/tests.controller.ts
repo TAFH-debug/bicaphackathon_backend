@@ -16,6 +16,21 @@ export class TestsController {
     return this.testsService.findAll();
   }
 
+  @Get('kazakh')
+  kazakh() {
+    return this.testsService.kazakh();
+  }
+
+  @Get('history')
+  history() {
+    return this.testsService.history();
+  }
+
+  @Get('math')
+  math() {
+    return this.testsService.math();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.testsService.findOne(id);
