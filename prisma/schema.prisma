@@ -9,24 +9,27 @@ datasource db {
 
 model HistoryExercise {
   id  String   @id @default(auto()) @map("_id") @db.ObjectId
-
+  data Json
   Exercise Exercise[]
 }
 
 model MathExercise {
   id  String   @id @default(auto()) @map("_id") @db.ObjectId
-
+  question String
+  answer   Int
   Exercise Exercise[]
 }
 
 model KazakhExercise {
   id  String   @id @default(auto()) @map("_id") @db.ObjectId
-
+  text String
+  answer String
   Exercise Exercise[]
 }
 
 model Exercise {
   id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
   subject      String
   history      HistoryExercise? @relation(fields: [historyId], references: [id])
   math         MathExercise?    @relation(fields: [mathId], references: [id])

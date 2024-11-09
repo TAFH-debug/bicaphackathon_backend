@@ -13,7 +13,7 @@ export class UsersService {
         score: {
           increment: 30,
         },
-        tests: {
+        completedExercises: {
           connect: { id: exerciseId },
         },
       },

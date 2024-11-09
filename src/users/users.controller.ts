@@ -21,13 +21,13 @@ export class UsersController {
   }
 
   @UseGuards(JwtGuard)
-  @Post()
+  @Post('done-test')
   doneTest(@Req() req, @Body() body) {
     return this.usersService.doneTest(req.user.id, body.testID);
   }
 
   @UseGuards(JwtGuard)
-  @Post()
+  @Post('done-exercise')
   doneExercise(@Req() req, @Body() body) {
     return this.usersService.doneTest(req.user.id, body.exerciseID);
   }
